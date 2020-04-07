@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--执行的sql语句-->
+<mapper namespace="com.test">
+    <select id="login" resultType="Integer">
+        select count(*) from oauth_user
+        where rawId=#{rawId}
+        and email=#{email};
+    </select>
+
+    <select id="getUserInfo" parameterType="Integer" resultType="com.test.model.User">
+        select * from users where id=#{id};
+    </select>
+
+
+    <select id="getUserList" parameterType="Integer" resultType="com.test.model.User">
+        select * from users
+        limit #{start},10;
+    </select>
+
+    <insert id="addUser" parameterType="com.test.model.User">
+        insert into users(username,password,age,sex,idDelete,create_time)
+        values(#{username},#{password},#{age},#{sex},0,current_timestamp());
+    </insert>
+
+
+    <update id="updateUser" parameterType="com.test.model.User">
+        update users set username=#{username},password=#{password},age=#{age},sex=#{sex}
+        where id=#{id};
+    </update>
+
+
+    <sql id="createTable">
+        CREATE TABLE Persons
+        (
+        P_Id int NOT NULL,
+        LastName varchar(255) NOT NULL,
+        FirstName varchar(255),
+        Address varchar(255),
+        City varchar(255),
+        CONSTRAINT pk_PersonID PRIMARY KEY (P_Id,LastName)
+        )
+    </sql>
+
+    <delete id="deleteUser" parameterType="Integer">
+        delete from user where id=#{id};
+    </delete>
+
+
+</mapper>
